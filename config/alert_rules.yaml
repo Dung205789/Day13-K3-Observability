@@ -1,19 +1,19 @@
 alerts:
-  - name: TODO_alert_1
-    severity: TODO
-    condition: TODO
+  - name: HighLatencyP95
+    severity: warning
+    condition: "p95(latency_ms) > 3000ms over 5m"
     type: symptom-based
-    owner: TODO
+    owner: oncall-engineer
     runbook: docs/alerts.md#alert-1
-  - name: TODO_alert_2
-    severity: TODO
-    condition: TODO
+  - name: HighErrorRate
+    severity: critical
+    condition: "error_rate_pct > 2% over 5m"
     type: symptom-based
-    owner: TODO
+    owner: oncall-engineer
     runbook: docs/alerts.md#alert-2
-  - name: TODO_alert_3
-    severity: TODO
-    condition: TODO
+  - name: CostSpikeOrExceeded
+    severity: warning
+    condition: "total_cost_usd > 2.5 over 1h"
     type: symptom-based
-    owner: TODO
+    owner: finops-team
     runbook: docs/alerts.md#alert-3
