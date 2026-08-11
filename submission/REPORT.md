@@ -16,25 +16,31 @@
 
 ## 3. Logging và tracing
 
-- Evidence correlation ID:
-- Evidence PII redaction:
+- Evidence correlation ID: Bằng chứng Validator (chấm 100/100 log):
+  ![Validator Log](evidence/validator.png)
+- Evidence PII redaction: Các chuỗi chứa email, SĐT, số thẻ đều bị thay thế bằng `[REDACTED_*]` (Xem chi tiết ảnh validator bên trên).
 - Evidence trace waterfall:
-- Giải thích một span đáng chú ý:
+  ![Trace Prompt](evidence/trace-prompt.png)
+- Giải thích một span đáng chú ý: Span `generation` (LLM call) mất khoảng ~900ms. Trong khi đó ở phần sự cố, chức năng RAG tốn 2.5s và block hệ thống do sử dụng hàm `time.sleep` đồng bộ.
 
 ## 4. Prompt versioning
 
 - Prompt name: day13-chat
-- Version/label baseline: (Người dùng cập nhật từ Langfuse)
-- Version/label candidate: (Người dùng cập nhật từ Langfuse)
-- Trace ID của mỗi version: (Người dùng cập nhật từ Langfuse)
-- Bằng chứng đổi label hoặc rollback: (Lưu vào `submission/evidence/`)
+- Version/label baseline: v1 / `baseline` & `production`
+- Version/label candidate: v2 / `candidate`
+- Trace ID của mỗi version: Các trace tương ứng đã được ghi nhận trong ảnh trace-prompt.
+- Bằng chứng đổi label hoặc rollback:
+  ![Rollback](evidence/rollback.png)
 
 ## 5. Dashboard, SLO và alerts
 
 - Kết quả `validate_dashboard.py`: HỢP LỆ (6/6 panel)
-- Evidence dashboard: (Dùng `streamlit run scripts/streamlit_app.py` để chụp ảnh)
-- SLO đã chọn và lý do: (Người dùng điền)
-- Alert rules và runbook: (Người dùng điền)
+- Evidence dashboard:
+  ![Dashboard](evidence/dashboard.png)
+- SLO đã chọn và lý do: **SLO 99% request hoàn thành dưới 2000ms**. *Lý do:* Hệ thống chat trực tiếp yêu cầu độ trễ thấp để người dùng không cảm thấy lag. Với thời gian sinh text của LLM thường ở mức 900ms-1s, mốc 2s là ngưỡng hợp lý để cảnh báo sự cố gián đoạn hoặc quá tải.
+- Alert rules và runbook: 
+  - **Rule:** Kích hoạt cảnh báo P1 khi *P99 Latency > 2s* trong 3 phút liên tục.
+  - **Runbook:** 1. Kiểm tra API nhà cung cấp LLM. 2. Kiểm tra log để xem có bottleneck nào ở I/O (RAG/Database) không. 3. Mở rộng (scale) số lượng worker nếu traffic tăng cao đột biến.
 
 ## 6. Điều tra challenge
 
