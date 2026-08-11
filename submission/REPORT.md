@@ -2,7 +2,7 @@
 
 ## 1. Thông tin nhóm
 
-- Tên nhóm: Observability Team
+- Tên nhóm: B2-4
 - Repository URL: https://github.com/Dung205789/Day13-K3-Observability
 - Commit SHA cuối: (Cập nhật khi commit)
 - Thành viên và vai trò: Nguyễn Bá Khánh Huy (Full-stack Observability Engineer)
