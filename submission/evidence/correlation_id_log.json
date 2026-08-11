@@ -1,0 +1,35 @@
+{
+  "service": "api",
+  "payload": {
+    "message_preview": "Give me a short summary of the observability workflow"
+  },
+  "event": "request_received",
+  "user_id_hash": "4c4f62330d76",
+  "feature": "summary",
+  "correlation_id": "req-977f1e2a",
+  "model": "claude-sonnet-4-5",
+  "env": "dev",
+  "session_id": "s06",
+  "level": "info",
+  "ts": "2026-08-11T03:33:56.430617Z"
+}
+{
+  "service": "api",
+  "latency_ms": 151,
+  "tokens_in": 35,
+  "tokens_out": 97,
+  "cost_usd": 0.00156,
+  "quality_score": 0.9,
+  "payload": {
+    "answer_preview": "Starter answer. Teams should improve this output logic and add better quality ch..."
+  },
+  "event": "response_sent",
+  "user_id_hash": "4c4f62330d76",
+  "feature": "summary",
+  "correlation_id": "req-977f1e2a",
+  "model": "claude-sonnet-4-5",
+  "env": "dev",
+  "session_id": "s06",
+  "level": "info",
+  "ts": "2026-08-11T03:33:56.588379Z"
+}
