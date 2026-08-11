@@ -38,13 +38,13 @@
 
 ## 6. Điều tra challenge
 
-- Challenge ID:
-- Triệu chứng từ metrics:
-- Trace ID liên quan:
-- Log line/correlation ID liên quan:
-- Root cause:
-- Fix action:
-- Preventive measure:
+- Challenge ID: day13-k3-observability-v1
+- Triệu chứng từ metrics: Latency của các request liên quan đến tính năng `refund` tăng vọt lên đến ~17000ms.
+- Trace ID liên quan: (Người dùng cập nhật từ Langfuse)
+- Log line/correlation ID liên quan: (Ví dụ: `req-cb8ba5b9` hoặc lấy một ID bất kỳ từ dashboard/logs)
+- Root cause: Hàm `retrieve` có chứa lệnh `time.sleep(2.5)` đồng bộ. Khi chạy dưới `async def chat`, nó đã chặn toàn bộ event loop, khiến các request phải chờ nhau.
+- Fix action: Đã sửa `async def chat` thành `def chat` tại `app/main.py`. FastAPI sẽ tự đưa hàm này vào threadpool để chạy song song.
+- Preventive measure: Tuyệt đối không dùng thư viện đồng bộ (blocking I/O, `time.sleep`) trực tiếp trong các endpoint `async def`. Cần dùng `await run_in_threadpool(...)` hoặc sửa endpoint thành `def`.
 
 ## 7. Đóng góp cá nhân
 
