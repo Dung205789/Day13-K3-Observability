@@ -23,18 +23,18 @@
 
 ## 4. Prompt versioning
 
-- Prompt name:
-- Version/label baseline:
-- Version/label candidate:
-- Trace ID của mỗi version:
-- Bằng chứng đổi label hoặc rollback:
+- Prompt name: day13-chat
+- Version/label baseline: (Người dùng cập nhật từ Langfuse)
+- Version/label candidate: (Người dùng cập nhật từ Langfuse)
+- Trace ID của mỗi version: (Người dùng cập nhật từ Langfuse)
+- Bằng chứng đổi label hoặc rollback: (Lưu vào `submission/evidence/`)
 
 ## 5. Dashboard, SLO và alerts
 
-- Kết quả `validate_dashboard.py`:
-- Evidence dashboard:
-- SLO đã chọn và lý do:
-- Alert rules và runbook:
+- Kết quả `validate_dashboard.py`: HỢP LỆ (6/6 panel)
+- Evidence dashboard: (Dùng `streamlit run scripts/streamlit_app.py` để chụp ảnh)
+- SLO đã chọn và lý do: (Người dùng điền)
+- Alert rules và runbook: (Người dùng điền)
 
 ## 6. Điều tra challenge
 
