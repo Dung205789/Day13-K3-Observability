@@ -4,8 +4,6 @@
 
 - Tên nhóm: Nhóm K3 — Day 13 Observability
 - Repository URL: https://github.com/Dung205789/Day13-K3-Observability
-- Branch nộp bài: `Dung`
-- Commit SHA cuối: `7600189` (cập nhật lại nếu có commit mới sau khi các thành viên bổ sung phần của mình)
 
 ### Thành viên và vai trò
 
@@ -111,9 +109,9 @@ Theo bảng phân vai trong `README.md` (tối đa 4 vai trò), nhóm 6 người
 
 ### Trạng thái Git hiện tại — cần các thành viên bổ sung
 
-**Cần lưu ý trước khi nộp:** toàn bộ code hiện nằm trong 2 commit trên branch `Dung` (`ce23f7e` và `7600189`), đứng tên một người. RUBRIC mục B2 yêu cầu *"Có commit/PR cụ thể và có thể kiểm tra"* và *"phần khai báo trong report khớp với thay đổi trong Git"*. Vì vậy cột Commit/PR dưới đây **để trống có chủ đích** — nhóm không điền SHA giả.
+**Cần lưu ý trước khi nộp:** bài nộp nằm trên branch `main`. Toàn bộ code hiện được gom trong các commit đứng tên một tài khoản (người điều phối), do nhóm làm chung trên cùng một máy trong buổi lab. RUBRIC mục B2 yêu cầu *"Có commit/PR cụ thể và có thể kiểm tra"* và *"phần khai báo trong report khớp với thay đổi trong Git"*. Vì vậy cột Commit/PR dưới đây **để trống có chủ đích** — nhóm không điền SHA giả.
 
-Cách để phần khai báo khớp với Git trước buổi chấm: mỗi thành viên checkout branch, tự review và bổ sung phần mình phụ trách (thêm test, cải thiện pattern PII, thêm panel, viết thêm runbook, bổ sung script...), rồi commit bằng tài khoản Git của chính mình. Sau đó điền SHA thật vào bảng.
+Cách để phần khai báo khớp với Git trước buổi chấm: mỗi thành viên clone repo, tự review và bổ sung phần mình phụ trách (thêm test, mở rộng pattern PII, thêm panel, viết thêm runbook, bổ sung script...), rồi commit bằng tài khoản Git của chính mình. Sau đó điền SHA thật vào bảng.
 
 ### Bảng phân công và đóng góp
 
@@ -121,7 +119,7 @@ Cách để phần khai báo khớp với Git trước buổi chấm: mỗi thà
 |---|---|---|---|---|---|
 | Phạm Tiến Anh | 2A202601549 | Correlation ID xuyên suốt request: middleware đọc/sinh `x-request-id`, bind structlog contextvars, trả header `x-request-id` + `x-response-time-ms` | `app/middleware.py` | *(chờ commit)* | Phải `clear_contextvars()` ở đầu mỗi request, nếu không context của request trước sẽ rò sang request sau khi chạy đồng thời — lỗi này không lộ ra khi test tuần tự, chỉ hiện khi concurrency > 1 |
 | Phạm Tuấn Việt | 2A202601987 | PII redaction và log enrichment: pattern regex, processor scrub trong pipeline structlog, bind context (`user_id_hash`, `session_id`, `feature`, `model`, `env`) | `app/pii.py`, `app/logging_config.py`, `app/main.py` | *(chờ commit)* | Vị trí đặt processor quyết định tính an toàn: `scrub_event` phải chạy **trước** bước ghi file, nếu đặt sau thì PII đã nằm trên đĩa rồi. Hash `user_id` thay vì log thẳng giúp vẫn truy vết được người dùng mà không lưu định danh |
-| Ngô Quang Dũng | 2A202601819 | Langfuse: cấu hình project, tạo prompt v1/v2, đổi label `production`, rollback, xác minh trace metadata; điều phối chung và tổng hợp báo cáo | `.env` (không commit), prompt trên Langfuse, `submission/REPORT.md` | `ce23f7e`, `7600189` | Langfuse SDK cache prompt 60s — đổi label xong request tiếp theo vẫn dùng version cũ. Nếu không restart app trước khi đo thì bằng chứng rollback sẽ sai. UI Cloud cũng trễ index vài phút so với API, nên xác minh bằng API đáng tin hơn chụp màn hình vội |
+| Ngô Quang Dũng | 2A202601819 | Langfuse: cấu hình project, tạo prompt v1/v2, đổi label `production`, rollback, xác minh trace metadata; điều phối chung và tổng hợp báo cáo | `.env` (không commit), prompt trên Langfuse, `submission/REPORT.md` | các commit trên `main` | Langfuse SDK cache prompt 60s — đổi label xong request tiếp theo vẫn dùng version cũ. Nếu không restart app trước khi đo thì bằng chứng rollback sẽ sai. UI Cloud cũng trễ index vài phút so với API, nên xác minh bằng API đáng tin hơn chụp màn hình vội |
 | Đỗ Đức Trường | 2A202601499 | Dashboard: 6 panel đúng contract từ `data/logs.jsonl`, biểu đồ timeline latency theo từng request, server tự build lại mỗi lần tải trang, auto-refresh theo `refresh_seconds` | `scripts/build_dashboard.py`, `scripts/serve_dashboard.py` | *(chờ commit)* | Ba cột P50/P95/P99 không cho thấy sự cố *diễn ra khi nào*; thêm timeline theo từng request thì spike hiện ra ngay lập tức. Dashboard tĩnh phải build tay là vô dụng khi demo — contract đã yêu cầu `refresh_seconds` chính là vì lý do đó |
 | Nguyễn Bá Khánh Huy | 2A202601591 | SLO targets, 3 alert symptom-based, runbook đầy đủ, logic đánh giá alert FIRING hiển thị trên dashboard | `config/slo.yaml`, `config/alert_rules.yaml`, `docs/alerts.md` | *(chờ commit)* | Đặt ngưỡng alert mà không đối chiếu với sự cố thật thì alert thành vô dụng: ngưỡng 3000ms ban đầu không bao giờ bắt được `rag_slow` (~2651ms). Chỉ phát hiện được khi cho alert chạy với dữ liệu thật thay vì chỉ viết ra file YAML |
 | Đinh Xuân Huy | 2A202601894 | Chạy challenge chính thức, điều tra Metrics → Traces → Logs, xác định root cause, đề xuất fix/preventive, viết kịch bản demo | `submission/evidence/challenge_investigation_logs.jsonl`, `submission/DEMO_SCRIPT.md` | *(chờ commit)* | Con số latency là bằng chứng mạnh nhất: 2650ms khớp gần như tuyệt đối với 2.5s sleep + 0.15s LLM, đủ để chỉ đích danh bước retrieval mà không cần đoán. Ngoài ra latency client 13s > 2.65s server cho thấy vấn đề thứ hai — retrieval đồng bộ chặn event loop |
