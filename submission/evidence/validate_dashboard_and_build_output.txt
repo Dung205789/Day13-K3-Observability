@@ -1,0 +1,3 @@
+Dashboard written to D:\VIN_LAB\Day13-K3-Observability\data\dashboard.html
+latency_p95=150.0ms(PASS) traffic_rate=10.0/min(PASS) error_rate=0.0%(PASS) cost_total=0.0192usd(PASS) tokens_total=1542(PASS) quality_mean=0.88(PASS)
+HỢP LỆ: 6/6 panel có trong dashboard contract.

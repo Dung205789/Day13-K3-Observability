@@ -1,0 +1,369 @@
+{
+  "total_traces": 26,
+  "traces": [
+    {
+      "trace_id": "4787988c2d90f82294b84f61379cc013",
+      "timestamp": "2026-08-11T04:04:43.290Z",
+      "sessionId": "s10",
+      "userId": "105a9cef3903",
+      "tags": [
+        "claude-sonnet-4-5",
+        "lab",
+        "qa"
+      ],
+      "prompt_name": "day13-chat",
+      "prompt_label": "production",
+      "prompt_version": 1
+    },
+    {
+      "trace_id": "6d39a61ed3f095ee3a07f36d7c5bb11b",
+      "timestamp": "2026-08-11T04:04:43.131Z",
+      "sessionId": "s08",
+      "userId": "2f015d970c0b",
+      "tags": [
+        "claude-sonnet-4-5",
+        "lab",
+        "qa"
+      ],
+      "prompt_name": "day13-chat",
+      "prompt_label": "production",
+      "prompt_version": 1
+    },
+    {
+      "trace_id": "e839cc2dbe09b1fd586c41538843c9e7",
+      "timestamp": "2026-08-11T04:04:42.973Z",
+      "sessionId": "s09",
+      "userId": "4d14d5d4f719",
+      "tags": [
+        "claude-sonnet-4-5",
+        "lab",
+        "qa"
+      ],
+      "prompt_name": "day13-chat",
+      "prompt_label": "production",
+      "prompt_version": 1
+    },
+    {
+      "trace_id": "23522598c9a9526e414603738592429a",
+      "timestamp": "2026-08-11T04:04:42.815Z",
+      "sessionId": "s07",
+      "userId": "1632c29ecdec",
+      "tags": [
+        "claude-sonnet-4-5",
+        "lab",
+        "qa"
+      ],
+      "prompt_name": "day13-chat",
+      "prompt_label": "production",
+      "prompt_version": 1
+    },
+    {
+      "trace_id": "7af8037f1d6702c9d6aba54974114ecc",
+      "timestamp": "2026-08-11T04:04:42.645Z",
+      "sessionId": "s05",
+      "userId": "64f6ec689229",
+      "tags": [
+        "claude-sonnet-4-5",
+        "lab",
+        "qa"
+      ],
+      "prompt_name": "day13-chat",
+      "prompt_label": "production",
+      "prompt_version": 1
+    },
+    {
+      "trace_id": "1c5aaaf4863cafbfe547d6ffad2bcb7f",
+      "timestamp": "2026-08-11T04:04:42.492Z",
+      "sessionId": "s06",
+      "userId": "4c4f62330d76",
+      "tags": [
+        "claude-sonnet-4-5",
+        "lab",
+        "summary"
+      ],
+      "prompt_name": "day13-chat",
+      "prompt_label": "production",
+      "prompt_version": 1
+    },
+    {
+      "trace_id": "221941ffd2df827e1779d1f248026fc3",
+      "timestamp": "2026-08-11T04:04:42.332Z",
+      "sessionId": "s04",
+      "userId": "75af07890985",
+      "tags": [
+        "claude-sonnet-4-5",
+        "lab",
+        "qa"
+      ],
+      "prompt_name": "day13-chat",
+      "prompt_label": "production",
+      "prompt_version": 1
+    },
+    {
+      "trace_id": "4a031fe047da057586fd218ac59c6cb4",
+      "timestamp": "2026-08-11T04:04:42.162Z",
+      "sessionId": "s03",
+      "userId": "97ce842ec69d",
+      "tags": [
+        "claude-sonnet-4-5",
+        "lab",
+        "summary"
+      ],
+      "prompt_name": "day13-chat",
+      "prompt_label": "production",
+      "prompt_version": 1
+    },
+    {
+      "trace_id": "20ba87fd732166d923c8e9123639cf07",
+      "timestamp": "2026-08-11T04:04:42.001Z",
+      "sessionId": "s02",
+      "userId": "95b6504a8bd6",
+      "tags": [
+        "claude-sonnet-4-5",
+        "lab",
+        "qa"
+      ],
+      "prompt_name": "day13-chat",
+      "prompt_label": "production",
+      "prompt_version": 1
+    },
+    {
+      "trace_id": "fe5f99626207d7d93154091f696d43fb",
+      "timestamp": "2026-08-11T04:04:41.844Z",
+      "sessionId": "s01",
+      "userId": "2055254ee30a",
+      "tags": [
+        "claude-sonnet-4-5",
+        "lab",
+        "qa"
+      ],
+      "prompt_name": "day13-chat",
+      "prompt_label": "production",
+      "prompt_version": 1
+    },
+    {
+      "trace_id": "9b3d0bb52fb22290d611e066074a81eb",
+      "timestamp": "2026-08-11T03:54:36.946Z",
+      "sessionId": "s10",
+      "userId": "105a9cef3903",
+      "tags": [
+        "claude-sonnet-4-5",
+        "lab",
+        "qa"
+      ],
+      "prompt_name": "day13-chat",
+      "prompt_label": "production",
+      "prompt_version": 1
+    },
+    {
+      "trace_id": "a5fc16d3b5351c6b841973a1e34b3a4a",
+      "timestamp": "2026-08-11T03:54:36.792Z",
+      "sessionId": "s09",
+      "userId": "4d14d5d4f719",
+      "tags": [
+        "claude-sonnet-4-5",
+        "lab",
+        "qa"
+      ],
+      "prompt_name": "day13-chat",
+      "prompt_label": "production",
+      "prompt_version": 1
+    },
+    {
+      "trace_id": "e62a7230bfdddeea90dd1e01ff1f2eee",
+      "timestamp": "2026-08-11T03:54:36.628Z",
+      "sessionId": "s08",
+      "userId": "2f015d970c0b",
+      "tags": [
+        "claude-sonnet-4-5",
+        "lab",
+        "qa"
+      ],
+      "prompt_name": "day13-chat",
+      "prompt_label": "production",
+      "prompt_version": 1
+    },
+    {
+      "trace_id": "d79a609bd8e477d0480c21362cca29bf",
+      "timestamp": "2026-08-11T03:54:36.469Z",
+      "sessionId": "s07",
+      "userId": "1632c29ecdec",
+      "tags": [
+        "claude-sonnet-4-5",
+        "lab",
+        "qa"
+      ],
+      "prompt_name": "day13-chat",
+      "prompt_label": "production",
+      "prompt_version": 1
+    },
+    {
+      "trace_id": "44f70c94191cb7b2c512c3a7a8f40ef7",
+      "timestamp": "2026-08-11T03:54:36.307Z",
+      "sessionId": "s06",
+      "userId": "4c4f62330d76",
+      "tags": [
+        "claude-sonnet-4-5",
+        "lab",
+        "summary"
+      ],
+      "prompt_name": "day13-chat",
+      "prompt_label": "production",
+      "prompt_version": 1
+    },
+    {
+      "trace_id": "cf3b3b59e956e8e2028e9f2a57dbae4a",
+      "timestamp": "2026-08-11T03:54:36.146Z",
+      "sessionId": "s04",
+      "userId": "75af07890985",
+      "tags": [
+        "claude-sonnet-4-5",
+        "lab",
+        "qa"
+      ],
+      "prompt_name": "day13-chat",
+      "prompt_label": "production",
+      "prompt_version": 1
+    },
+    {
+      "trace_id": "68ee33243babae583d37149284268521",
+      "timestamp": "2026-08-11T03:54:35.985Z",
+      "sessionId": "s05",
+      "userId": "64f6ec689229",
+      "tags": [
+        "claude-sonnet-4-5",
+        "lab",
+        "qa"
+      ],
+      "prompt_name": "day13-chat",
+      "prompt_label": "production",
+      "prompt_version": 1
+    },
+    {
+      "trace_id": "7172a9e71f6831e1f5378f01fae3d37e",
+      "timestamp": "2026-08-11T03:54:35.819Z",
+      "sessionId": "s02",
+      "userId": "95b6504a8bd6",
+      "tags": [
+        "claude-sonnet-4-5",
+        "lab",
+        "qa"
+      ],
+      "prompt_name": "day13-chat",
+      "prompt_label": "production",
+      "prompt_version": 1
+    },
+    {
+      "trace_id": "dcef52dfc938e12a2322062439f1d48a",
+      "timestamp": "2026-08-11T03:54:35.667Z",
+      "sessionId": "s03",
+      "userId": "97ce842ec69d",
+      "tags": [
+        "claude-sonnet-4-5",
+        "lab",
+        "summary"
+      ],
+      "prompt_name": "day13-chat",
+      "prompt_label": "production",
+      "prompt_version": 1
+    },
+    {
+      "trace_id": "20fe9c022569be7395c2b56feb8e26d9",
+      "timestamp": "2026-08-11T03:54:35.511Z",
+      "sessionId": "s01",
+      "userId": "2055254ee30a",
+      "tags": [
+        "claude-sonnet-4-5",
+        "lab",
+        "qa"
+      ],
+      "prompt_name": "day13-chat",
+      "prompt_label": "production",
+      "prompt_version": 1
+    },
+    {
+      "trace_id": "9fe0d7a9078f6800fc96c9ed1d4f57bd",
+      "timestamp": "2026-08-11T03:46:40.018Z",
+      "sessionId": "prompt-prod-rollback",
+      "userId": "47e5cd92258c",
+      "tags": [
+        "claude-sonnet-4-5",
+        "lab",
+        "refund"
+      ],
+      "prompt_name": "day13-chat",
+      "prompt_label": "production",
+      "prompt_version": 1
+    },
+    {
+      "trace_id": "7fe05569efe40f2f6eb8d2dd36d4d4c2",
+      "timestamp": "2026-08-11T03:45:30.688Z",
+      "sessionId": "prompt-prod-after-v2-retry",
+      "userId": "47513414fa96",
+      "tags": [
+        "claude-sonnet-4-5",
+        "lab",
+        "refund"
+      ],
+      "prompt_name": "day13-chat",
+      "prompt_label": "production",
+      "prompt_version": 2
+    },
+    {
+      "trace_id": "2e6251a348ff56cd31b1a694e3cf950f",
+      "timestamp": "2026-08-11T03:44:38.579Z",
+      "sessionId": "prompt-prod-after-v2",
+      "userId": "bdfb0d8c04b6",
+      "tags": [
+        "claude-sonnet-4-5",
+        "lab",
+        "refund"
+      ],
+      "prompt_name": "day13-chat",
+      "prompt_label": "production",
+      "prompt_version": 1
+    },
+    {
+      "trace_id": "00ad996e634bf325b5e06ede4eb32d85",
+      "timestamp": "2026-08-11T03:44:16.977Z",
+      "sessionId": "prompt-prod-before",
+      "userId": "0037311538ee",
+      "tags": [
+        "claude-sonnet-4-5",
+        "lab",
+        "refund"
+      ],
+      "prompt_name": "day13-chat",
+      "prompt_label": "production",
+      "prompt_version": 1
+    },
+    {
+      "trace_id": "1231be7292817dade695bf84f3193c2a",
+      "timestamp": "2026-08-11T03:43:42.665Z",
+      "sessionId": "prompt-candidate-s1",
+      "userId": "b1ce12d44f09",
+      "tags": [
+        "claude-sonnet-4-5",
+        "lab",
+        "refund"
+      ],
+      "prompt_name": "day13-chat",
+      "prompt_label": "candidate",
+      "prompt_version": 2
+    },
+    {
+      "trace_id": "866a74af9b4bc0036e4131cedaa65f0f",
+      "timestamp": "2026-08-11T03:43:11.773Z",
+      "sessionId": "prompt-baseline-s1",
+      "userId": "b1ce12d44f09",
+      "tags": [
+        "claude-sonnet-4-5",
+        "lab",
+        "refund"
+      ],
+      "prompt_name": "day13-chat",
+      "prompt_label": "baseline",
+      "prompt_version": 1
+    }
+  ]
+}
