@@ -1,8 +1,23 @@
-# Kịch bản demo — Day 13 Observability (Ngô Quang Dũng — 2A202601819)
+# Kịch bản demo — Day 13 Observability (Nhóm K3, 6 thành viên)
 
 Thời lượng: 6-7 phút. Nguyên tắc: **chỉ demo thứ thay đổi trước mắt người xem**, không đứng đọc chart tĩnh.
 
 Luồng bắt buộc theo rubric: **Metrics → Traces → Logs → Root cause → Fix**.
+
+## Phân vai khi thuyết trình
+
+RUBRIC mục A3 và B1 chấm việc **từng thành viên giải thích được phần mình triển khai**, nên mỗi người trình bày đúng phần mình phụ trách:
+
+| Màn | Người trình bày | Nội dung |
+|---|---|---|
+| Mở đầu + Màn 1 (PII live) | **Phạm Tuấn Việt** (2A202601987) | Giới thiệu hệ thống, demo PII redaction |
+| Màn 1 phần correlation ID | **Phạm Tiến Anh** (2A202601549) | Giải thích header `x-request-id`, contextvars |
+| Màn 2 (sự cố + dashboard) | **Đỗ Đức Trường** (2A202601499) | Dashboard 6 panel, timeline latency |
+| Màn 2 phần alert | **Nguyễn Bá Khánh Huy** (2A202601591) | Banner FIRING, SLO, runbook |
+| Màn 3 (traces + prompt) | **Ngô Quang Dũng** (2A202601819) | Langfuse waterfall, prompt version, rollback |
+| Màn 4-5 (logs + root cause) | **Đinh Xuân Huy** (2A202601894) | Correlation ID → root cause → fix |
+
+Mỗi người nên nắm được **câu hỏi liên quan tới phần của mình** trong bảng cuối tài liệu này.
 
 ---
 
