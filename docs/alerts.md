@@ -6,8 +6,8 @@ Mỗi alert phải dựa trên triệu chứng người dùng hoặc SLO, không
 
 - Tên: high_latency_p95
 - Severity: warning
-- SLI/SLO liên quan: `latency_p95_ms` (`config/slo.yaml`, objective 3000ms, target 99.5%)
-- Điều kiện và thời gian duy trì: P95 latency (panel `latency` trong dashboard) > 3000ms, duy trì liên tục 5 phút
+- SLI/SLO liên quan: `latency_p95_ms` (`config/slo.yaml`, objective 2000ms, target 99.5%)
+- Điều kiện và thời gian duy trì: P95 latency (panel `latency` trong dashboard) > 2000ms, duy trì liên tục 5 phút. Ngưỡng này khớp `latency_threshold_ms` của challenge chính thức; ngưỡng 3000ms trong dashboard contract quá lỏng nên không bắt được incident `rag_slow` (~2650ms).
 - Ảnh hưởng tới người dùng: Câu trả lời chậm rõ rệt, người dùng chờ lâu hơn ngưỡng chấp nhận được, có thể bỏ cuộc trước khi nhận được câu trả lời
 - Ba bước kiểm tra đầu tiên:
   1. Xem panel Latency trên dashboard để xác nhận P95 đang vượt ngưỡng và từ thời điểm nào

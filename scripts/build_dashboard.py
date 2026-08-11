@@ -7,6 +7,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import re
 import sys
 from collections import Counter, defaultdict
 from datetime import datetime, timezone
@@ -35,6 +36,7 @@ PALETTE = {
     "gridline": "#e1e0d9",
     "baseline": "#c3c2b7",
     "good": "#0ca30c",
+    "warning": "#b8860b",
     "critical": "#d03b3b",
     "border": "rgba(11,11,11,0.10)",
 }
@@ -121,6 +123,105 @@ def bar_chart(items: list[tuple[str, float]], unit: str, color: str, threshold_v
     )
 
 
+def sparkline(values: list[float], unit: str, color: str, threshold_value: float | None = None) -> str:
+    """Chuỗi thời gian theo từng request — cho thấy spike ngay khi incident bật."""
+    if len(values) < 2:
+        return ""
+    width, height = 420, 90
+    pad_bottom, pad_top = 16, 8
+    max_val = max(max(values), threshold_value or 0, 1e-9)
+    plot_h = height - pad_bottom - pad_top
+    step = width / (len(values) - 1)
+    points = [
+        f"{i * step:.1f},{height - pad_bottom - (v / max_val) * plot_h:.1f}"
+        for i, v in enumerate(values)
+    ]
+    area = (
+        f'<polygon points="0,{height - pad_bottom} {" ".join(points)} {width},{height - pad_bottom}" '
+        f'fill="{color}" fill-opacity="0.12" />'
+    )
+    line = f'<polyline points="{" ".join(points)}" fill="none" stroke="{color}" stroke-width="2" />'
+    last_x, last_y = points[-1].split(",")
+    marker = f'<circle cx="{last_x}" cy="{last_y}" r="4" fill="{color}" stroke="{PALETTE["surface"]}" stroke-width="2" />'
+    threshold_line = ""
+    if threshold_value is not None:
+        ty = height - pad_bottom - (threshold_value / max_val) * plot_h
+        threshold_line = (
+            f'<line x1="0" y1="{ty:.1f}" x2="{width}" y2="{ty:.1f}" '
+            f'stroke="{PALETTE["critical"]}" stroke-width="1.5" stroke-dasharray="4 3" />'
+        )
+    baseline = f'<line x1="0" y1="{height - pad_bottom}" x2="{width}" y2="{height - pad_bottom}" stroke="{PALETTE["baseline"]}" stroke-width="1" />'
+    caption = (
+        f'<text x="0" y="{height - 4}" font-size="9" fill="{PALETTE["ink_muted"]}" '
+        f'font-family="system-ui">{len(values)} request gan nhat (cu → moi), don vi {unit}</text>'
+    )
+    return (
+        f'<svg viewBox="0 0 {width} {height}" width="100%" height="{height}" role="img">'
+        f"{area}{baseline}{threshold_line}{line}{marker}{caption}</svg>"
+    )
+
+
+def evaluate_alerts(alerts_path: Path, measured: dict[str, float]) -> list[dict]:
+    """Đối chiếu số đo hiện tại với config/alert_rules.yaml để biết alert nào đang FIRING."""
+    if not alerts_path.exists():
+        return []
+    rules = yaml.safe_load(alerts_path.read_text(encoding="utf-8")) or {}
+    # condition dạng "latency_p95_ms > 3000 for 5m" → tách metric, toán tử, ngưỡng
+    pattern = re.compile(r"^(\w+)\s*([<>]=?)\s*([\d.]+)")
+    firing = []
+    for rule in rules.get("alerts", []):
+        match = pattern.match(str(rule.get("condition", "")))
+        if not match:
+            continue
+        metric, operator, raw_target = match.groups()
+        if metric not in measured:
+            continue
+        actual, target = measured[metric], float(raw_target)
+        breached = actual > target if operator.startswith(">") else actual < target
+        if breached:
+            firing.append(
+                {
+                    "name": rule.get("name", "unknown"),
+                    "severity": rule.get("severity", "warning"),
+                    "condition": rule.get("condition", ""),
+                    "actual": actual,
+                    "runbook": rule.get("runbook", ""),
+                }
+            )
+    return firing
+
+
+def alert_banner(firing: list[dict]) -> str:
+    if not firing:
+        return (
+            f'<div style="background:{PALETTE["surface"]};border:1px solid {PALETTE["border"]};'
+            f'border-left:4px solid {PALETTE["good"]};border-radius:8px;padding:10px 14px;'
+            f'font:13px system-ui;color:{PALETTE["ink_secondary"]};margin-top:16px;">'
+            f'<strong style="color:{PALETTE["good"]};">Khong co alert nao dang FIRING</strong>'
+            f" &middot; moi SLI deu nam trong nguong cua config/slo.yaml</div>"
+        )
+    rows = []
+    for alert in firing:
+        color = PALETTE["critical"] if alert["severity"] == "critical" else PALETTE["warning"]
+        rows.append(
+            f'<div style="display:flex;gap:10px;align-items:baseline;flex-wrap:wrap;">'
+            f'<span style="font:700 12px system-ui;color:{color};text-transform:uppercase;">{alert["severity"]}</span>'
+            f'<span style="font:600 13px system-ui;color:{PALETTE["ink_primary"]};">{alert["name"]}</span>'
+            f'<span style="font:12px system-ui;color:{PALETTE["ink_secondary"]};">'
+            f'dieu kien <code>{alert["condition"]}</code> &middot; do duoc <strong>{alert["actual"]:g}</strong>'
+            f"</span>"
+            f'<span style="font:11px system-ui;color:{PALETTE["ink_muted"]};">runbook: {alert["runbook"]}</span>'
+            f"</div>"
+        )
+    return (
+        f'<div style="background:{PALETTE["surface"]};border:1px solid {PALETTE["border"]};'
+        f'border-left:4px solid {PALETTE["critical"]};border-radius:8px;padding:12px 14px;'
+        f'display:flex;flex-direction:column;gap:8px;margin-top:16px;">'
+        f'<div style="font:700 13px system-ui;color:{PALETTE["critical"]};">'
+        f"{len(firing)} ALERT DANG FIRING</div>{''.join(rows)}</div>"
+    )
+
+
 def panel_card(title: str, unit: str, value_label: str, passed: bool, chart_html: str, note: str = "") -> str:
     return f"""
     <section style="background:{PALETTE['surface']};border:1px solid {PALETTE['border']};
@@ -161,6 +262,10 @@ def build(config_path: Path, logs_path: Path, output_path: Path) -> None:
         "ms",
         PALETTE["blue"],
         threshold_value=lat_cfg["threshold"]["value"],
+    )
+    # Timeline theo từng request: spike hiện ra ngay khi incident được bật.
+    lat_chart += sparkline(
+        latencies[-40:], "ms", PALETTE["blue"], threshold_value=lat_cfg["threshold"]["value"]
     )
 
     # --- Traffic ---
@@ -214,6 +319,17 @@ def build(config_path: Path, logs_path: Path, output_path: Path) -> None:
 
     generated_at = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M:%S UTC")
 
+    firing = evaluate_alerts(
+        config_path.parent / "alert_rules.yaml",
+        {
+            "latency_p95_ms": p95,
+            "error_rate_pct": error_rate,
+            "daily_cost_usd": total_cost,
+            "quality_score_avg": quality_mean,
+        },
+    )
+    refresh_seconds = config["refresh_seconds"]
+
     html = f"""<!doctype html>
 <html lang="vi"><head><meta charset="utf-8">
 <title>{config['title']}</title>
@@ -222,15 +338,20 @@ def build(config_path: Path, logs_path: Path, output_path: Path) -> None:
   .wrap {{ max-width: 1080px; margin: 0 auto; padding: 24px; }}
   .grid {{ display:grid; grid-template-columns: repeat(3, 1fr); gap:16px; margin-top:16px; }}
   @media (max-width: 900px) {{ .grid {{ grid-template-columns: 1fr; }} }}
+  button {{ font:600 12px system-ui; padding:6px 12px; border-radius:6px; cursor:pointer;
+    border:1px solid {PALETTE['border']}; background:{PALETTE['surface']}; color:{PALETTE['ink_primary']}; }}
 </style></head>
 <body>
 <div class="wrap">
   <div style="display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:8px;">
     <h1 style="margin:0;font-size:20px;color:{PALETTE['ink_primary']};">{config['title']}</h1>
-    <div style="font-size:12px;color:{PALETTE['ink_muted']};">
-      Time range: {config['time_range_minutes']} phut &middot; Refresh: {config['refresh_seconds']}s &middot; Generated: {generated_at} &middot; Source: data/logs.jsonl ({len(records)} records)
+    <div style="font-size:12px;color:{PALETTE['ink_muted']};display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+      <span>Time range: {config['time_range_minutes']} phut &middot; Refresh: {refresh_seconds}s &middot; Generated: {generated_at} &middot; Source: data/logs.jsonl ({len(records)} records)</span>
+      <button onclick="location.reload()">Lam moi ngay</button>
+      <span id="countdown"></span>
     </div>
   </div>
+  {alert_banner(firing)}
   <div class="grid">
     {panel_card("Latency percentiles", "ms", f"P95 {p95:g}", lat_pass, lat_chart, f"P50={p50:g}ms P99={p99:g}ms | nguong P95<={lat_cfg['threshold']['value']}ms")}
     {panel_card("Request traffic", "req/min", f"{rate_per_minute}", traf_pass, traf_chart, f"Tong {total_requests} request | nguong >={traf_cfg['threshold']['value']} req/min")}
@@ -240,11 +361,25 @@ def build(config_path: Path, logs_path: Path, output_path: Path) -> None:
     {panel_card("Quality proxy", "0-1", f"{quality_mean}", qual_pass, qual_chart, f"nguong >={qual_cfg['threshold']['value']}")}
   </div>
 </div>
+<script>
+  // Auto-refresh đúng theo refresh_seconds của dashboard contract.
+  let remaining = {refresh_seconds};
+  const label = document.getElementById("countdown");
+  setInterval(() => {{
+    remaining -= 1;
+    if (remaining <= 0) {{ location.reload(); }}
+    else {{ label.textContent = "tu lam moi sau " + remaining + "s"; }}
+  }}, 1000);
+</script>
 </body></html>"""
 
     output_path.parent.mkdir(parents=True, exist_ok=True)
     output_path.write_text(html, encoding="utf-8")
     print(f"Dashboard written to {output_path}")
+    if firing:
+        print("ALERT FIRING: " + ", ".join(f"{a['name']}({a['severity']})" for a in firing))
+    else:
+        print("ALERT: none firing")
     print(
         f"latency_p95={p95}ms({'PASS' if lat_pass else 'FAIL'}) "
         f"traffic_rate={rate_per_minute}/min({'PASS' if traf_pass else 'FAIL'}) "

@@ -2,8 +2,10 @@ service: day13-observability-lab
 window: 28d
 slis:
   latency_p95_ms:
-    objective: 3000
+    objective: 2000
     target: 99.5
+    note: Khớp latency_threshold_ms của challenge chính thức; ngưỡng 3000ms trong
+      dashboard contract quá lỏng để bắt được incident rag_slow (~2650ms).
   error_rate_pct:
     objective: 2
     target: 99.0

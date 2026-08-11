@@ -4,7 +4,7 @@
 
 - Tên nhóm: Cá nhân — Ngô Quang Dũng
 - Repository URL: https://github.com/Dung205789/Day13-K3-Observability
-- Commit SHA cuối: (cập nhật sau khi commit cuối cùng được tạo — xem lịch sử Git của repo trên)
+- Commit SHA cuối: `ce23f7e86e635296d7b67400d87a8d852373a56f` (branch `Dung`)
 - Thành viên và vai trò: Ngô Quang Dũng (MSSV 2A202601819) — đảm nhiệm cả 4 vai trò do làm cá nhân: Logging & PII; Tracing & Prompt Version; Dashboard, SLO & Alert; Incident, Report & Demo.
 
 ## 2. Kết quả kỹ thuật
@@ -12,7 +12,7 @@
 - Điểm `validate_logs.py` (lần chạy chính thức cuối, log sạch 20 record / 10 correlation ID): **100/100**. Trong lúc test mở rộng (96 record gộp cả baseline, incident practice, challenge, prompt-versioning), script từng báo **70/100** do 1 false positive: `user_id_hash` (SHA256 rút gọn) của user thử nghiệm `promptcheck-02` tình cờ chứa 10 ký tự số liên tiếp trùng regex số điện thoại VN — không phải PII thật bị lộ (hash không thể đảo ngược về số điện thoại gốc). Log đầy đủ của quá trình test được lưu tại `submission/evidence/full_session_logs_backup.jsonl` và kết quả validator tương ứng tại `submission/evidence/validate_logs_output.txt`.
 - Tổng số traces trên Langfuse: **26 traces** có đầy đủ metadata (`prompt_name`, `prompt_label`, `prompt_version`, `user_id`, `session_id`, `tags`). Xác nhận qua Langfuse public API vì giao diện Cloud UI có độ trễ index vài phút so với API — xem `submission/evidence/langfuse_traces_api_evidence.json`.
 - Số PII leak còn lại: **0** trong log chính thức cuối cùng (đã phân tích false positive ở trên).
-- Link/đường dẫn dashboard: `data/dashboard.html` — HTML tĩnh tự chứa, build bằng `python scripts/build_dashboard.py` từ `data/logs.jsonl` theo đúng contract `config/dashboard.yaml`. Ảnh evidence: `submission/evidence/dashboard_baseline.jpg`, `dashboard_incident_rag_slow.jpg`, `dashboard_final_clean.jpg`.
+- Link/đường dẫn dashboard: chạy `python scripts/serve_dashboard.py --port 8090` rồi mở http://127.0.0.1:8090/dashboard.html — dashboard **live**, tự build lại từ `data/logs.jsonl` ở mỗi lần tải trang và tự làm mới sau đúng `refresh_seconds` của contract. Bản tĩnh `data/dashboard.html` sinh bằng `python scripts/build_dashboard.py`. Ngoài 6 panel theo contract, dashboard còn có: biểu đồ timeline latency theo từng request (thấy spike ngay khi incident bật) và banner **alert đang FIRING** đọc điều kiện trực tiếp từ `config/alert_rules.yaml`. Ảnh evidence: `submission/evidence/dashboard_baseline.jpg`, `dashboard_incident_rag_slow.jpg`, `dashboard_alert_firing.jpg`, `dashboard_final_clean.jpg`.
 
 ## 3. Logging và tracing
 
@@ -39,7 +39,7 @@
 - Kết quả `validate_dashboard.py`: `HỢP LỆ: 6/6 panel có trong dashboard contract.` (`submission/evidence/validate_dashboard_and_build_output.txt`)
 - Evidence dashboard: `dashboard_baseline.jpg` (trạng thái bình thường, mọi panel PASS), `dashboard_incident_rag_slow.jpg` (P95 latency tăng 150ms → 2651ms sau khi bật `rag_slow`, vẫn PASS vì chưa vượt ngưỡng 3000ms nhưng thay đổi rõ rệt theo đúng hướng), `dashboard_final_clean.jpg` (trạng thái cuối trước khi nộp bài).
 - SLO đã chọn và lý do (`config/slo.yaml`):
-  - `latency_p95_ms <= 3000` (target 99.5%): fake LLM + RAG mock cộng lại thường < 500ms ở trạng thái bình thường, ngưỡng 3s đủ dư địa nhưng vẫn đủ nhạy để bắt sự cố `rag_slow` (spike 2.5s).
+  - `latency_p95_ms <= 2000` (target 99.5%): ban đầu chọn 3000ms theo dashboard contract, nhưng khi kiểm tra bằng dashboard live phát hiện ngưỡng đó **không bao giờ bắt được** chính incident `rag_slow` mà nó được thiết kế để phát hiện — sự cố này tạo P95 ~2651ms, nằm dưới 3000ms. Đã hạ về **2000ms** cho khớp `latency_threshold_ms` của challenge chính thức; sau khi sửa, alert `high_latency_p95` bắn đúng lúc incident bật (bằng chứng: `submission/evidence/dashboard_alert_firing.jpg`).
   - `error_rate_pct <= 2` (target 99.0%): chuẩn phổ biến cho API nội bộ giai đoạn thử nghiệm.
   - `daily_cost_usd <= 2.5` (target 100%): dựa trên chi phí thực đo ~0.0015–0.003 USD/request của fake LLM.
   - `quality_score_avg >= 0.75` (target 95%): theo heuristic quality proxy trong `app/agent.py` (điểm trung bình quan sát được ~0.88 ở trạng thái bình thường).

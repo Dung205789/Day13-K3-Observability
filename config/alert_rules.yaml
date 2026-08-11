@@ -1,7 +1,7 @@
 alerts:
   - name: high_latency_p95
     severity: warning
-    condition: latency_p95_ms > 3000 for 5m
+    condition: latency_p95_ms > 2000 for 5m
     type: symptom-based
     owner: dung.ngo
     runbook: docs/alerts.md#alert-1
